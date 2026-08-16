@@ -1,0 +1,1101 @@
+:root {
+  --bg: #f3f4f6;
+  --card: #ffffff;
+
+  --text: #111827;
+  --muted: #6b7280;
+
+  --primary: #111827;
+
+  --accent: #4f46e5;
+  --accent-light: #eef2ff;
+
+  --green: #16a34a;
+  --green-light: #dcfce7;
+
+  --yellow: #ca8a04;
+  --yellow-light: #fef9c3;
+
+  --orange: #ea580c;
+  --orange-light: #ffedd5;
+
+  --danger: #dc2626;
+
+  --line: #e5e7eb;
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+
+html {
+  background: var(--bg);
+}
+
+
+body {
+  margin: 0;
+
+  min-height: 100vh;
+
+  background: var(--bg);
+  color: var(--text);
+
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Noto Sans TC",
+    sans-serif;
+
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+
+button,
+input {
+  font: inherit;
+}
+
+
+button {
+  border: none;
+
+  border-radius: 12px;
+
+  padding: 10px 14px;
+
+  background: var(--primary);
+  color: white;
+
+  cursor: pointer;
+}
+
+
+button:active {
+  transform: scale(.97);
+}
+
+
+button.secondary {
+  background: white;
+  color: var(--text);
+
+  border: 1px solid var(--line);
+}
+
+
+button.danger {
+  background: var(--danger);
+}
+
+
+input {
+  width: 100%;
+
+  border: 1px solid var(--line);
+
+  border-radius: 12px;
+
+  padding: 11px 12px;
+
+  background: white;
+
+  color: var(--text);
+
+  outline: none;
+}
+
+
+input:focus {
+  border-color: #a5b4fc;
+
+  box-shadow:
+    0 0 0 3px #e0e7ff;
+}
+
+
+
+/* ==================================================
+   App
+================================================== */
+
+.app {
+  width: 100%;
+
+  max-width: 1000px;
+
+  margin: 0 auto;
+
+  padding: 14px;
+}
+
+
+
+/* ==================================================
+   Header
+================================================== */
+
+.topbar {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 20;
+
+  padding-top:
+    calc(
+      8px +
+      env(safe-area-inset-top)
+    );
+
+  padding-bottom: 14px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 12px;
+
+  background:
+    rgba(
+      243,
+      244,
+      246,
+      .94
+    );
+
+  backdrop-filter:
+    blur(14px);
+}
+
+
+.title-area h1 {
+  margin: 0;
+
+  font-size: 26px;
+
+  font-weight: 900;
+}
+
+
+.title-area p {
+  margin: 3px 0 0;
+
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+
+.top-actions {
+  display: flex;
+
+  gap: 7px;
+}
+
+
+.scan-main {
+  background: var(--accent);
+}
+
+
+
+/* ==================================================
+   Toolbar
+================================================== */
+
+.toolbar {
+  display: grid;
+
+  grid-template-columns:
+    1fr auto;
+
+  gap: 8px;
+}
+
+
+.view-switch {
+  display: flex;
+
+  gap: 5px;
+
+  padding: 4px;
+
+  background: white;
+
+  border: 1px solid var(--line);
+
+  border-radius: 12px;
+}
+
+
+.view-button {
+  width: 40px;
+
+  padding: 7px;
+
+  background: transparent;
+
+  color: var(--muted);
+
+  border-radius: 8px;
+}
+
+
+.view-button.active {
+  background: var(--primary);
+
+  color: white;
+}
+
+
+
+/* ==================================================
+   Stats
+================================================== */
+
+.stats {
+  display: flex;
+
+  gap: 8px;
+
+  padding: 13px 0 3px;
+
+  overflow-x: auto;
+}
+
+
+.stat {
+  flex: 0 0 auto;
+
+  padding: 7px 11px;
+
+  background: white;
+
+  border: 1px solid var(--line);
+
+  border-radius: 999px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+
+
+/* ==================================================
+   Grid
+================================================== */
+
+.manga-container.grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 12px;
+
+  margin-top: 12px;
+}
+
+
+.card {
+  min-width: 0;
+
+  overflow: hidden;
+
+  background: white;
+
+  border-radius: 17px;
+
+  border:
+    1px solid
+    rgba(0, 0, 0, .04);
+
+  box-shadow:
+    0 4px 18px
+    rgba(0, 0, 0, .06);
+}
+
+
+.grid .cover {
+  display: block;
+
+  width: 100%;
+
+  aspect-ratio: 3 / 4;
+
+  object-fit: cover;
+
+  background: #e5e7eb;
+}
+
+
+.card-body {
+  padding: 11px;
+}
+
+
+.manga-title {
+  font-size: 15px;
+
+  font-weight: 900;
+
+  line-height: 1.4;
+
+  margin-bottom: 5px;
+}
+
+
+.meta {
+  color: var(--muted);
+
+  font-size: 12px;
+
+  line-height: 1.65;
+}
+
+
+.complete {
+  color: var(--green);
+
+  font-weight: 800;
+}
+
+
+.missing {
+  color: var(--orange);
+}
+
+
+.collection-badges {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 5px;
+
+  margin-top: 7px;
+}
+
+
+.mini-badge {
+  padding: 3px 6px;
+
+  border-radius: 6px;
+
+  font-size: 10px;
+
+  background: #f3f4f6;
+
+  color: #374151;
+}
+
+
+.first-badge {
+  background: var(--yellow-light);
+
+  color: #854d0e;
+}
+
+
+.obi-badge {
+  background: #fce7f3;
+
+  color: #9d174d;
+}
+
+
+.card-actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  margin-top: 9px;
+}
+
+
+.card-actions button {
+  padding: 7px 9px;
+
+  border-radius: 9px;
+
+  font-size: 11px;
+}
+
+
+
+/* ==================================================
+   List
+================================================== */
+
+.manga-container.list {
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 10px;
+
+  margin-top: 12px;
+}
+
+
+.list .card {
+  display: grid;
+
+  grid-template-columns:
+    105px 1fr;
+}
+
+
+.list .cover {
+  width: 105px;
+
+  height: 155px;
+
+  object-fit: cover;
+
+  background: #e5e7eb;
+}
+
+
+.list .card-body {
+  padding: 11px;
+}
+
+
+.list .collection-badges {
+  margin-top: 4px;
+}
+
+
+
+/* ==================================================
+   Empty
+================================================== */
+
+.empty {
+  grid-column: 1 / -1;
+
+  text-align: center;
+
+  padding: 70px 20px;
+
+  color: var(--muted);
+}
+
+
+
+/* ==================================================
+   Dialog
+================================================== */
+
+dialog {
+  width:
+    min(
+      94vw,
+      540px
+    );
+
+  max-height: 90vh;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 19px;
+
+  overflow: auto;
+
+  box-shadow:
+    0 25px 80px
+    rgba(0, 0, 0, .3);
+}
+
+
+dialog::backdrop {
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      .52
+    );
+
+  backdrop-filter: blur(2px);
+}
+
+
+.modal {
+  padding: 18px;
+}
+
+
+.large-modal {
+  width: 100%;
+}
+
+
+.small-modal {
+  max-width: 400px;
+}
+
+
+.modal-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 15px;
+}
+
+
+.modal-header h2 {
+  margin: 0;
+}
+
+
+.modal-subtitle {
+  margin-top: 3px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+
+.close-button {
+  flex: 0 0 auto;
+
+  width: 38px;
+
+  height: 38px;
+
+  padding: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  background: #f3f4f6;
+
+  color: var(--text);
+}
+
+
+.field {
+  margin-bottom: 14px;
+}
+
+
+.field label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+
+.dialog-buttons {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 8px;
+
+  margin-top: 18px;
+}
+
+
+.help-text {
+  color: var(--muted);
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+
+/* ==================================================
+   ISBN
+================================================== */
+
+.isbn-box {
+  margin-bottom: 18px;
+
+  padding: 12px;
+
+  background: var(--accent-light);
+
+  border-radius: 14px;
+}
+
+
+.scan-button {
+  width: 100%;
+
+  margin-bottom: 9px;
+
+  background: var(--accent);
+}
+
+
+.isbn-manual {
+  display: grid;
+
+  grid-template-columns:
+    1fr auto;
+
+  gap: 7px;
+}
+
+
+.status-text {
+  min-height: 18px;
+
+  margin-top: 8px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+
+.status-text.success {
+  color: var(--green);
+}
+
+
+.status-text.error {
+  color: var(--danger);
+}
+
+
+
+/* ==================================================
+   Cover
+================================================== */
+
+.cover-upload-area {
+  display: flex;
+
+  gap: 13px;
+
+  align-items: flex-start;
+}
+
+
+.cover-preview {
+  width: 105px;
+
+  height: 140px;
+
+  border-radius: 12px;
+
+  object-fit: cover;
+
+  background: #e5e7eb;
+
+  border: 1px solid var(--line);
+
+  display: none;
+}
+
+
+.cover-upload-buttons {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.file-button {
+  display: inline-flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 10px 14px;
+
+  border-radius: 12px;
+
+  background: var(--primary);
+
+  color: white;
+
+  cursor: pointer;
+}
+
+
+
+/* ==================================================
+   Volume overview
+================================================== */
+
+.volume-legend {
+  display: flex;
+
+  gap: 14px;
+
+  flex-wrap: wrap;
+
+  margin-bottom: 12px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+
+.legend-dot {
+  display: inline-block;
+
+  width: 9px;
+
+  height: 9px;
+
+  border-radius: 50%;
+}
+
+
+.owned-dot {
+  background: var(--accent);
+}
+
+
+.volume-actions {
+  display: flex;
+
+  gap: 8px;
+
+  margin-bottom: 13px;
+}
+
+
+.volume-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      1fr
+    );
+
+  gap: 8px;
+
+  max-height: 55vh;
+
+  overflow-y: auto;
+
+  padding: 2px;
+}
+
+
+.volume-card {
+  min-height: 78px;
+
+  padding: 8px 4px;
+
+  background: white;
+
+  color: var(--text);
+
+  border: 1px solid var(--line);
+
+  border-radius: 11px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 3px;
+}
+
+
+.volume-card.owned {
+  border: 2px solid var(--accent);
+
+  background: var(--accent-light);
+}
+
+
+.volume-number {
+  font-weight: 900;
+
+  font-size: 16px;
+}
+
+
+.volume-icons {
+  min-height: 17px;
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+}
+
+
+.volume-extra-count {
+  font-size: 9px;
+
+  color: var(--muted);
+}
+
+
+
+/* ==================================================
+   Single volume
+================================================== */
+
+.option-row {
+  min-height: 70px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 12px;
+
+  margin-bottom: 9px;
+
+  border: 1px solid var(--line);
+
+  border-radius: 14px;
+
+  cursor: pointer;
+}
+
+
+.option-row.main-option {
+  background: var(--accent-light);
+
+  border-color: #c7d2fe;
+}
+
+
+.option-title {
+  font-weight: 800;
+}
+
+
+.option-description {
+  margin-top: 2px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+
+.option-row input[type="checkbox"],
+.custom-option-row input[type="checkbox"] {
+  width: 23px;
+
+  height: 23px;
+
+  accent-color: var(--accent);
+}
+
+
+.custom-section {
+  margin-top: 18px;
+
+  padding-top: 17px;
+
+  border-top: 1px solid var(--line);
+}
+
+
+.section-title {
+  font-weight: 900;
+}
+
+
+.section-description {
+  margin-top: 2px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+
+.custom-options {
+  margin-top: 10px;
+}
+
+
+.custom-option-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 10px 7px;
+
+  border-bottom: 1px solid #f3f4f6;
+}
+
+
+.custom-option-row label {
+  flex: 1;
+
+  cursor: pointer;
+}
+
+
+.custom-delete {
+  width: 31px;
+
+  height: 31px;
+
+  padding: 0;
+
+  background: #fee2e2;
+
+  color: var(--danger);
+
+  border-radius: 8px;
+}
+
+
+.add-custom-row {
+  display: grid;
+
+  grid-template-columns:
+    1fr auto;
+
+  gap: 7px;
+
+  margin-top: 12px;
+}
+
+
+
+/* ==================================================
+   Scanner
+================================================== */
+
+.reader {
+  width: 100%;
+
+  overflow: hidden;
+
+  border-radius: 14px;
+
+  background: var(--primary);
+}
+
+
+#reader video {
+  border-radius: 14px;
+}
+
+
+.scanner-status {
+  margin-top: 10px;
+
+  color: var(--muted);
+
+  text-align: center;
+
+  font-size: 12px;
+}
+
+
+
+/* ==================================================
+   Desktop
+================================================== */
+
+@media (min-width: 700px) {
+
+  .manga-container.grid {
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(0, 1fr)
+      );
+  }
+
+
+  .volume-grid {
+    grid-template-columns:
+      repeat(
+        6,
+        1fr
+      );
+  }
+
+}
+
+
+
+/* ==================================================
+   Phone
+================================================== */
+
+@media (max-width: 430px) {
+
+  .title-area h1 {
+    font-size: 23px;
+  }
+
+
+  .topbar {
+    align-items: flex-start;
+  }
+
+
+  .top-actions {
+    flex-direction: column;
+  }
+
+
+  .top-actions button {
+    padding: 8px 10px;
+
+    font-size: 12px;
+  }
+
+
+  .volume-grid {
+    grid-template-columns:
+      repeat(
+        4,
+        1fr
+      );
+  }
+
+}
