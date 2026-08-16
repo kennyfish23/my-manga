@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta
+    name="theme-color"
+    content="#111827"
+  >
+
+  <title>我的漫畫收藏</title>
+
+  <link
+    rel="stylesheet"
+    href="./style.css"
+  >
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =========================
+       頂部
+  ========================== -->
+
+  <header class="topbar">
+
+    <div class="title-area">
+
+      <h1>我的漫畫</h1>
+
+      <p>
+        漫畫收藏・集數・首刷・書腰管理
+      </p>
+
+    </div>
+
+    <div class="top-actions">
+
+      <button
+        class="scan-main"
+        onclick="openScannerForNew()"
+      >
+        📷 掃條碼
+      </button>
+
+      <button
+        onclick="openAdd()"
+      >
+        ＋ 新增
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       搜尋
+  ========================== -->
+
+  <div class="toolbar">
+
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="搜尋漫畫、作者、出版社、ISBN..."
+      oninput="render()"
+    >
+
+    <div class="view-switch">
+
+      <button
+        id="gridViewButton"
+        class="view-button active"
+        onclick="setViewMode('grid')"
+        title="圖示模式"
+      >
+        ▦
+      </button>
+
+      <button
+        id="listViewButton"
+        class="view-button"
+        onclick="setViewMode('list')"
+        title="清單模式"
+      >
+        ☷
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       統計
+  ========================== -->
+
+  <div
+    id="stats"
+    class="stats"
+  ></div>
+
+
+  <!-- =========================
+       漫畫列表
+  ========================== -->
+
+  <main
+    id="mangaContainer"
+    class="manga-container grid"
+  ></main>
+
+</div>
+
+
+
+<!-- ======================================================
+     新增 / 編輯漫畫
+====================================================== -->
+
+<dialog id="editDialog">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2 id="editTitle">
+        新增漫畫
+      </h2>
+
+      <button
+        class="close-button"
+        onclick="closeEditDialog()"
+      >
+        ✕
+      </button>
+
+    </div>
+
+    <input
+      type="hidden"
+      id="editId"
+    >
+
+
+    <!-- ISBN -->
+
+    <div class="isbn-box">
+
+      <button
+        type="button"
+        class="scan-button"
+        onclick="startBarcodeScanFromEdit()"
+      >
+        📷 掃描 ISBN 條碼
+      </button>
+
+      <div class="isbn-manual">
+
+        <input
+          id="isbnInput"
+          type="text"
+          inputmode="numeric"
+          placeholder="ISBN，例如 978626..."
+        >
+
+        <button
+          type="button"
+          class="secondary"
+          onclick="lookupManualISBN()"
+        >
+          查詢
+        </button>
+
+      </div>
+
+      <div
+        id="isbnStatus"
+        class="status-text"
+      ></div>
+
+    </div>
+
+
+    <!-- 漫畫名稱 -->
+
+    <div class="field">
+
+      <label for="titleInput">
+        漫畫名稱
+      </label>
+
+      <input
+        id="titleInput"
+        placeholder="例如：我內心的糟糕念頭"
+      >
+
+    </div>
+
+
+    <!-- 作者 -->
+
+    <div class="field">
+
+      <label for="authorInput">
+        作者
+      </label>
+
+      <input
+        id="authorInput"
+        placeholder="作者"
+      >
+
+    </div>
+
+
+    <!-- 出版社 -->
+
+    <div class="field">
+
+      <label for="publisherInput">
+        出版社
+      </label>
+
+      <input
+        id="publisherInput"
+        placeholder="出版社"
+      >
+
+    </div>
+
+
+    <!-- 出版集數 -->
+
+    <div class="field">
+
+      <label for="totalInput">
+        目前出版到第幾集
+      </label>
+
+      <input
+        id="totalInput"
+        type="number"
+        min="1"
+        inputmode="numeric"
+        placeholder="例如：13"
+      >
+
+    </div>
+
+
+    <!-- 封面 -->
+
+    <div class="field">
+
+      <label>
+        漫畫封面
+      </label>
+
+      <div class="cover-upload-area">
+
+        <img
+          id="coverPreview"
+          class="cover-preview"
+          alt="封面預覽"
+        >
+
+        <div class="cover-upload-buttons">
+
+          <label
+            for="coverInput"
+            class="file-button"
+          >
+            🖼️ 選擇圖片
+          </label>
+
+          <input
+            id="coverInput"
+            type="file"
+            accept="image/*"
+            hidden
+          >
+
+          <button
+            type="button"
+            class="secondary"
+            onclick="removeCover()"
+          >
+            移除封面
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="dialog-buttons">
+
+      <button
+        class="secondary"
+        onclick="closeEditDialog()"
+      >
+        取消
+      </button>
+
+      <button
+        onclick="saveManga()"
+      >
+        儲存
+      </button>
+
+    </div>
+
+  </div>
+
+</dialog>
+
+
+
+<!-- ======================================================
+     集數總覽
+====================================================== -->
+
+<dialog id="volumeDialog">
+
+  <div class="modal large-modal">
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2 id="volumeTitle">
+          管理集數
+        </h2>
+
+        <div class="modal-subtitle">
+          點選集數可設定首刷、書腰與其他收藏項目
+        </div>
+
+      </div>
+
+      <button
+        class="close-button"
+        onclick="volumeDialog.close()"
+      >
+        ✕
+      </button>
+
+    </div>
+
+
+    <div class="volume-legend">
+
+      <span>
+        <i class="legend-dot owned-dot"></i>
+        已收藏
+      </span>
+
+      <span>
+        ⭐ 首刷
+      </span>
+
+      <span>
+        🎗️ 書腰
+      </span>
+
+    </div>
+
+
+    <div class="volume-actions">
+
+      <button
+        class="secondary"
+        onclick="setAllVolumesOwned(true)"
+      >
+        全部已有
+      </button>
+
+      <button
+        class="secondary"
+        onclick="setAllVolumesOwned(false)"
+      >
+        全部取消
+      </button>
+
+    </div>
+
+
+    <div
+      id="volumeGrid"
+      class="volume-grid"
+    ></div>
+
+
+    <div class="dialog-buttons">
+
+      <button
+        onclick="volumeDialog.close()"
+      >
+        完成
+      </button>
+
+    </div>
+
+  </div>
+
+</dialog>
+
+
+
+<!-- ======================================================
+     單集詳細資料
+====================================================== -->
+
+<dialog id="volumeDetailDialog">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2 id="volumeDetailTitle">
+          第 1 集
+        </h2>
+
+        <div class="modal-subtitle">
+          收藏狀態
+        </div>
+
+      </div>
+
+      <button
+        class="close-button"
+        onclick="closeVolumeDetail()"
+      >
+        ✕
+      </button>
+
+    </div>
+
+
+    <!-- 已收藏 -->
+
+    <label class="option-row main-option">
+
+      <div>
+
+        <div class="option-title">
+          📚 已收藏
+        </div>
+
+        <div class="option-description">
+          我目前擁有這一集
+        </div>
+
+      </div>
+
+      <input
+        id="volumeOwnedInput"
+        type="checkbox"
+      >
+
+    </label>
+
+
+    <!-- 首刷 -->
+
+    <label class="option-row">
+
+      <div>
+
+        <div class="option-title">
+          ⭐ 首刷限定
+        </div>
+
+        <div class="option-description">
+          這一本是首刷版本
+        </div>
+
+      </div>
+
+      <input
+        id="volumeFirstEditionInput"
+        type="checkbox"
+      >
+
+    </label>
+
+
+    <!-- 書腰 -->
+
+    <label class="option-row">
+
+      <div>
+
+        <div class="option-title">
+          🎗️ 有書腰
+        </div>
+
+        <div class="option-description">
+          收藏時有保留書腰
+        </div>
+
+      </div>
+
+      <input
+        id="volumeObiInput"
+        type="checkbox"
+      >
+
+    </label>
+
+
+    <!-- 自訂 -->
+
+    <div class="custom-section">
+
+      <div class="section-title-row">
+
+        <div>
+
+          <div class="section-title">
+            其他收藏項目
+          </div>
+
+          <div class="section-description">
+            可以自己新增想記錄的項目
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="customOptionsContainer"
+        class="custom-options"
+      ></div>
+
+
+      <div class="add-custom-row">
+
+        <input
+          id="newCustomOptionInput"
+          placeholder="例如：安利美特特典"
+        >
+
+        <button
+          type="button"
+          onclick="addCustomOption()"
+        >
+          ＋
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="dialog-buttons">
+
+      <button
+        class="secondary"
+        onclick="closeVolumeDetail()"
+      >
+        取消
+      </button>
+
+      <button
+        onclick="saveVolumeDetail()"
+      >
+        儲存
+      </button>
+
+    </div>
+
+  </div>
+
+</dialog>
+
+
+
+<!-- ======================================================
+     Scanner
+====================================================== -->
+
+<dialog id="scannerDialog">
+
+  <div class="modal scanner-modal">
+
+    <div class="modal-header">
+
+      <h2>
+        掃描漫畫條碼
+      </h2>
+
+      <button
+        class="close-button"
+        onclick="stopBarcodeScan()"
+      >
+        ✕
+      </button>
+
+    </div>
+
+    <p class="help-text">
+      將漫畫背面的 978 或 979 開頭 ISBN 條碼對準框框。
+    </p>
+
+    <div
+      id="reader"
+      class="reader"
+    ></div>
+
+    <div
+      id="scannerStatus"
+      class="scanner-status"
+    >
+      準備開啟相機…
+    </div>
+
+    <div class="dialog-buttons">
+
+      <button
+        class="secondary"
+        onclick="stopBarcodeScan()"
+      >
+        取消
+      </button>
+
+    </div>
+
+  </div>
+
+</dialog>
+
+
+
+<!-- ======================================================
+     刪除確認
+====================================================== -->
+
+<dialog id="deleteDialog">
+
+  <div class="modal small-modal">
+
+    <h2>
+      刪除漫畫
+    </h2>
+
+    <p id="deleteMessage">
+      確定要刪除嗎？
+    </p>
+
+    <div class="dialog-buttons">
+
+      <button
+        class="secondary"
+        onclick="deleteDialog.close()"
+      >
+        取消
+      </button>
+
+      <button
+        class="danger"
+        onclick="confirmDelete()"
+      >
+        刪除
+      </button>
+
+    </div>
+
+  </div>
+
+</dialog>
+
+
+
+<!-- ======================================================
+     條碼掃描套件
+====================================================== -->
+
+<script
+  src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"
+></script>
+
+
+<!-- ======================================================
+     App 主程式
+====================================================== -->
+
+<script
+  src="./script.js"
+></script>
+
+</body>
+
+</html>
